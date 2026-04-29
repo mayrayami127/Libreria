@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 import "./ProductList.css"
+import {useNavigate } from "react-router";
 
 const ProductList =() => {
     const[productos,setProductos] = useState([]);
     const[error,setError]=useState(null)
     const[orden,setOrden]= useState("Relevante")
+    const[filtros,setFiltros]=useState({categorias: [], tipos: []})
+    const navigate =useNavigate()
+
+
 
     useEffect(() => {
         const fetchProductos =async () =>{
@@ -22,11 +27,27 @@ const ProductList =() => {
         fetchProductos()
     },[] )
 
+    const ToggleFiltros = (tipoFiltro, valor)=> {
+        setFiltros((prev)=>({
+            ...prev,
+            [tipoFiltro]:prev[tipoFiltro].includes(valor)
+            ? prev[tipoFiltro].filter((item)=>item !== valor)
+            :[ ...prev[tipoFiltro],valor],
+        }))
+    }
+
+    const productosFiltrados = productos.filter((producto) =>{
+        const matchCategoria = 
+        filtros.categorias.length === 0 || filtros.categorias.includes(producto.categoria)
+         const matchTipo = 
+        filtros.tipos.length === 0 || filtros.tipos.includes(producto.tipo);
+        return matchCategoria && matchTipo;
+    })
     const handleOrdenChange = (e) => {
        setOrden(e.target.value)
     }
 
-    const productosOrdenados = [...productos].sort((a,b) =>{
+    const productosOrdenados = [...productosFiltrados].sort((a,b) =>{
         if(orden === "Precio:Menor a Mayor"){
             return a.precio - b.precio
         }if(orden === "Precio:Mayor a Menor"){
@@ -34,6 +55,11 @@ const ProductList =() => {
         }
         return 0;
     });
+
+    const handleImagenClick =(id)=>{
+        navigate(`/producto${id}`);
+    }
+
     return (
         <section className="main-content">
           <aside className="filters">
@@ -42,30 +68,46 @@ const ProductList =() => {
             <div className="filter-category">
                 <h3>Categorias</h3>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox" 
+                    onChange={() => ToggleFiltros("categorias","Hombres")}
+                    />
+                    
                     <span>Hombres</span>
                 </label>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox" 
+                    onChange={() => ToggleFiltros("categorias","Mujeres")}
+                    />
                     <span>Mujeres</span>
                 </label>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox" 
+                    onChange={() => ToggleFiltros("categorias","Niños")}
+                    />
                     <span>Niños</span>
                 </label>
             </div>
             <div className="filter-category">
                 <h3>Tipos</h3>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox"
+                    onChange={() => ToggleFiltros("tipos","Prendas de abrigo")}
+
+                    />
                     <span>Prendas de abrigo</span>
                 </label>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox" 
+                       onChange={() => ToggleFiltros("tipos","Ropa interior")}
+
+                    />
                     <span>Ropa interior</span>
                 </label>
                 <label >
-                    <input type="checkbox" />
+                    <input type="checkbox" 
+                     onChange={() => ToggleFiltros("tipos","Calzado")}
+
+                    />
                     <span>Calzado</span>
                 </label>
             </div>
@@ -87,17 +129,22 @@ const ProductList =() => {
             </div>
             <div className="products">
                 {error ?(
-                    <p className="error-message">(error)</p>
-                ):(
+                    <p className="error-message">{error}</p>
+                ):productosFiltrados.length> 0 ?(
                     productosOrdenados.map((producto) =>(
                         <div className="product-card" key={producto.id}>
                             <img src={producto.image} alt={producto.image} 
-                            className="product-image" />
-
+                            className="product-image" 
+                            onClick={()=>handleImagenClick(producto.id)}/>
+                            
                             <h3>{producto.nombre}</h3>
                             <p>{producto.precio}</p>
                         </div>
                     ))
+                ):(
+                    <p className="no-results">
+                        No hay productos que coicida con los filtros seleccionados
+                    </p>
                 )}
             </div>
 
