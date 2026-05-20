@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import "./DetailsProduct.css";
-import { useState } from "react";
+
 import { useState, useEffect } from "react"
 
 const DetailsProduct =() => {

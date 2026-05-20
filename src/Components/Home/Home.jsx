@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
+import Search from "../Search/Search";
 import ProductList from "../ProductList/ProductList";
 
-const Home =() => {
+const Home =({buscarTermino}) => {
+    const [buscarTerminoLocal, setbuscarTerminoLocal] = useState("");
+    const handleBuscar =(termino) =>{
+        setbuscarTerminoLocal (termino)
+    }
     return (
         <>
-         <ProductList/>
+        <Search onSearch = {handleBuscar}/>
+         <ProductList buscarTermino = {buscarTerminoLocal || buscarTermino}/>
         </>
     )
 }

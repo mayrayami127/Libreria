@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./ProductList.css"
 import {useNavigate } from "react-router";
 
-const ProductList =() => {
+const ProductList =(buscarTermino) => {
     const[productos,setProductos] = useState([]);
     const[error,setError]=useState(null)
     const[orden,setOrden]= useState("Relevante")
@@ -36,12 +36,21 @@ const ProductList =() => {
         }))
     }
 
+    const normalizarTexto = (texto) =>{
+        return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300 - \u0367f]/g,"");
+    }
+
     const productosFiltrados = productos.filter((producto) =>{
         const matchCategoria = 
         filtros.categorias.length === 0 || filtros.categorias.includes(producto.categoria)
          const matchTipo = 
         filtros.tipos.length === 0 || filtros.tipos.includes(producto.tipo);
-        return matchCategoria && matchTipo;
+        const matchBuscar = !buscarTermino || normalizarTexto(producto.nombre).includes(normalizarTexto(buscarTermino)) ||
+        normalizarTexto(producto.descripcion).includes(normalizarTexto(buscarTermino));
+        return matchCategoria && matchTipo && matchBuscar;
     })
     const handleOrdenChange = (e) => {
        setOrden(e.target.value)

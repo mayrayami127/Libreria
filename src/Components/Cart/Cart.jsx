@@ -1,10 +1,87 @@
+import { useCart } from "../CartContext/CartContext";
 import "./Cart.css";
 
 const Cart =() => {
-    const {carrito} = useCart();
+    const {carrito, actualizarCantidad,eliminarProducto} = useCart();
+
+    const costoDeEnvio = 10;
+    const subTotal= carrito.reduce((acc,producto)=>
+       acc + producto.precio * producto.cantidad, 0)
+    
+    const total = subTotal + costoDeEnvio
+
+    const handleAumentarCantidad =(produtoId) =>{
+         actualizarCantidad(produtoId, 1)
+        }
+        const headleDisminuirCantidad = (productoId) => {
+            const producto = carrito.find((item) => item.id === productoId)
+            if(producto.cantidad > 1){
+                actualizarCantidad(productoId, -1)
+            }
+        }
     return (
         <div className="cart-container">
             <h2>TU <span>CARRITO</span></h2> 
+            { carrito.length === 0 ?(
+                <p>Tu carrito esta vacio</p>
+            ):(<>
+               <div className="cart-header">
+                <p>Producto</p>
+                <p>Precio</p>
+                <p>Cantidad</p>
+                <p>Total</p>
+                <p>Accion</p>
+                </div>
+                <ul className="cart-items">
+                 {
+                    carrito.map((producto) => {
+                        const totalPrecio = producto.precio * producto.cantidad
+                        return(
+                            <li className="cart-item" key={producto.id}>
+                                <div className="product-info">
+                                    <img src={producto.imagen || "https://via.placeholder.com/150"} alt="" 
+                                    className="product-images"
+                                    />
+                                    <span>{producto.nombre}</span>
+                                </div>
+                                <p>${producto.precio.toFixed(2)}</p>
+                                <div className="quantity-controls">
+                                    <button className="quantity-btn"
+                                    onClinck={()=> headleDisminuirCantidad(producto.id)}>
+                                        -
+                                    </button>
+                                    <input type="number" 
+                                    className="quantity-input" 
+                                    readOnly 
+                                    value={producto.cantidad}
+                                    />
+                                    <button className="quantity-btn"
+                                    onClinck={()=> handleAumentarCantidad(producto.id)}>
+                                        +
+                                    </button>
+                                </div>
+                                <p>${totalPrecio.toFixed(2)}</p>
+                                <button className="delete-btn"
+                                    onClinck={()=> eliminarProducto(producto.id)}
+                                    >
+                                    <i className="fas fa-trash"></i>
+                                </button>
+                            </li>
+                        )
+                    })
+                 }   
+                 </ul>
+                 
+                 </>
+                )
+                }
+                <div className="cart-summary">
+                    <h2>TU <span>CARRITO</span></h2> 
+                    <p>Total Parcial: <spa>${subTotal.toFixed(2)}</spa></p>
+                    <p>Tarida de envio: <span>${costoDeEnvio.toFixed(2)}</span></p>
+                    <p className="total">Total: <span>${total.toFixed(2)} </span></p>
+                    <button className="checkout-btn">PASAR POR LA CAJA</button>
+                </div>
         </div>
     )
 }
