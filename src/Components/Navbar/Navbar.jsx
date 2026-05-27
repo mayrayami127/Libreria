@@ -1,33 +1,45 @@
 import { useCart } from "../CartContext/CartContext"
 import "./Navbar.css"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
-const Navbar =() => {
-    const {carrito}= useCart();
-    const totalProductos = carrito.reduce((acc,producto)=>
-    acc + totalProductos.cantidad, 0)
+const Navbar = ({alternarBuscador}) => {
+    const { carrito } = useCart();
+    const mavigate = useNavigate();
+    const location = useLocation()
+    const totalProductos = carrito.reduce((acc, producto) => acc + producto.cantidad, 0)
+    const handleHome = () => {
+        alternarBuscador();
+    }
+
+    if (location.pathname === "/login" || location.pathname === "/") { 
+        return (
+            <section className="header" style={{ justifyContent: 'center' }}>
+                <h1 className="logo" style={{ margin: 0 }}>Only<span>Books</span></h1>
+            </section>
+        );
+    }
+
     return (
         <section className="header">
             <h1 className="logo">Only<span>Books</span></h1>
-              <nav className="navbar">
+            <nav className="navbar">
                 <ul className="nav-links">
-                   <li>
-                      <Link to ="/">Home</Link >
-                   </li>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
                 </ul>
-
             </nav>
             <div className="icons">
-                <button className="search-button">
-                    <i className="fas fa-search"></i>
+                <button className='search-button' onClick={handleHome}>
+                    <i className='fas fa-search'></i>
                 </button>
-                <Link to ="/carrito" className="icon-button">
-                <i className="fas fa-shopping-cart"> </i>
-                <span className="counter">{totalProductos}</span>
-                </Link >
-            </div>
+                <Link to="/carrito" className="icon-button">
+                    <i className='fas fa-shopping-cart'></i>
+                    <span className='counter'>{totalProductos}</span>
+                </Link>
+            </div> {}
         </section>
-    )
+    );
 }
 
-export default Navbar
+export default Navbar;

@@ -1,0 +1,54 @@
+{
+  "books": [
+    {
+      "id": 1,
+      "nombre": "Cien años de soledad",
+      "autor": "Gabriel García Márquez",
+      "categoria": "Novela",
+      "tipo": "Literatura latinoamericana",
+      "precio": 1500,
+      "descripcion": "La historia de la familia Buendía en Macondo.",
+      "image": "https://covers.openlibrary.org/b/id/8231996-L.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "1984",
+      "autor": "George Orwell",
+      "categoria": "Distopía",
+      "tipo": "Ciencia ficción",
+      "precio": 1200,
+      "descripcion": "Una sociedad vigilada por el Gran Hermano.",
+      "image": "https://covers.openlibrary.org/b/id/7222246-L.jpg"
+    },
+    {
+      "id": 3,
+      "nombre": "El Principito",
+      "autor": "Antoine de Saint-Exupéry",
+      "categoria": "Infantil",
+      "tipo": "Ficción",
+      "precio": 900,
+      "descripcion": "Una historia clásica sobre amistad y vida.",
+      "image": "data:image/jpeg;base64,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"
+    },
+    {
+      "id": 4,
+      "nombre": "Harry Potter y la piedra filosofal",
+      "autor": "J. K. Rowling",
+      "categoria": "Fantasía",
+      "tipo": "Juvenil",
+      "precio": 1700,
+      "descripcion": "El comienzo de Harry en Hogwarts.",
+      "image": "https://covers.openlibrary.org/b/id/7984916-L.jpg"
+    },
+    {
+      "id": 5,
+      "nombre": "Don Quijote de la Mancha",
+      "autor": "Miguel de Cervantes",
+      "categoria": "Novela",
+      "tipo": "Clásico",
+      "precio": 1800,
+      "descripcion": "Una de las obras más famosas en español.",
+      "image": "https://covers.openlibrary.org/b/id/8231856-L.jpg"
+    }
+  ]
+}
