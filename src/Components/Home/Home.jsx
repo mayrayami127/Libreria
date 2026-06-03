@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Search from "../Search/Search";
 import ProductList from "../ProductList/ProductList";
+import Hero from "../Hero/Hero";
 
 const Home =({buscarTermino, mostrarBuscador}) => {
     const [buscarTerminoLocal, setbuscarTerminoLocal] = useState("");

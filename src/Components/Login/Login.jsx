@@ -14,8 +14,8 @@ import Stack from '@mui/material/Stack';
 import MuiCard from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom'
-
-const navigate = useNavigate()
+import ForgotPassword from './ForgotPassword.jsx'; 
+import GoogleIcon from '@mui/icons-material/Google';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -31,17 +31,34 @@ const Card = styled(MuiCard)(({ theme }) => ({
   boxShadow: 'hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px',
 }));
 
+
 const SignInContainer = styled(Stack)(({ theme }) => ({
-  height: '80vh', // Ajustado para que no tape tu Navbar de OnlyBooks
+  height: 'calc((1 - var(--template-frame-height, 0)) * 100dvh)',
   minHeight: '100%',
   padding: theme.spacing(2),
-  justifyContent: 'center',
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(4),
+  },
+  '&::before': {
+    content: '""',
+    display: 'block',
+    position: 'absolute',
+    zIndex: -1,
+    inset: 0,
+    backgroundImage:
+      'radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))',
+    backgroundRepeat: 'no-repeat',
+    ...theme.applyStyles('dark', {
+      backgroundImage:
+        'radial-gradient(at 50% 50%, hsla(210, 100%, 16%, 0.5), hsl(220, 30%, 5%))',
+    }),
   },
 }));
 
 export default function Login() {
+  
+const navigate = useNavigate()
+
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
@@ -98,7 +115,7 @@ export default function Login() {
             variant="h4"
             sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', textAlign: 'center', fontWeight: 'bold' }}
           >
-            Sign in
+            Login
           </Typography>
           <Box
             component="form"
@@ -124,7 +141,18 @@ export default function Login() {
               />
             </FormControl>
             <FormControl>
-              <FormLabel htmlFor="password" sx={{ mb: 1 }}>Contraseña</FormLabel>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <FormLabel htmlFor="password" sx={{ mb: 1 }}>Contraseña</FormLabel>
+                <Link
+                  component="button"
+                  type="button"
+                  onClick={handleAbrirModal}
+                  variant="body2"
+                  sx={{ textDecoration: 'none', pb: 1 }}
+                >
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </Box>
               <TextField
                 error={passwordError}
                 helperText={passwordErrorMessage}
@@ -143,6 +171,36 @@ export default function Login() {
               control={<Checkbox value="remember" color="primary" />}
               label="Recordarme"
             />
+             <ForgotPassword open={open} handleClose={handleClose} />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={validateInputs}
+            >
+              Sign in
+            </Button>
+            <Link
+              component="button"
+              type="button"
+              onClick={handleClickOpen}
+              variant="body2"
+              sx={{ alignSelf: 'center' }}
+            >
+              Forgot your password?
+            </Link>
+          </Box>
+          <Divider>or</Divider>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Button
+              fullWidth
+              variant="outlined"
+              onClick={() => alert('Sign in with Google')}
+              startIcon={<GoogleIcon />}
+            >
+              Sign in with Google
+            </Button>
+            
             <Button
               type="submit"
               fullWidth
@@ -153,22 +211,26 @@ export default function Login() {
             </Button>
           </Box>
           <Divider>o</Divider>
+
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {/* 🌟 REEMPLAZADO: Tu botón original con el icono oficial de Google */}
             <Button
               fullWidth
               variant="outlined"
               onClick={() => alert('Próximamente ingreso con Google')}
+              startIcon={<GoogleIcon />}
             >
               Ingresar con Google
             </Button>
-            <Typography sx={{ textAlign: 'center', mt: 1 }}>
+            <Typography sx={{ textAlign: 'center' }}>
                ¿No tienes cuenta?{' '}
              <Link
-              component="button" // 👈 Esto le dice a Material UI que se comporte como un botón de React
+              component="button" 
               type="button"
               variant="body2"
-              onClick={() => navigate('/signup')} // 👈 Ahora sí está en el lugar correcto
-              sx={{ fontWeight: 'bold', textDecoration: 'none', verticalAlign: 'baseline' }}>
+              onClick={() => navigate('/signup')} 
+              sx={{ alignSelf: 'center'  }}
+              >
               Regístrate
             </Link>
             </Typography>

@@ -1,6 +1,6 @@
 import { useCart } from "../CartContext/CartContext"
 import "./Navbar.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate , useLocation} from "react-router-dom"
 
 const Navbar = ({alternarBuscador}) => {
     const { carrito } = useCart();
@@ -11,7 +11,7 @@ const Navbar = ({alternarBuscador}) => {
         alternarBuscador();
     }
 
-    if (location.pathname === "/login" || location.pathname === "/") { 
+    if (location.pathname === "/login" || location.pathname === "/" || location.pathname === "/signup") { 
         return (
             <section className="header" style={{ justifyContent: 'center' }}>
                 <h1 className="logo" style={{ margin: 0 }}>Only<span>Books</span></h1>
@@ -25,7 +25,7 @@ const Navbar = ({alternarBuscador}) => {
             <nav className="navbar">
                 <ul className="nav-links">
                     <li>
-                        <Link to="/">Home</Link>
+                        <Link to="/home">Home</Link>
                     </li>
                 </ul>
             </nav>

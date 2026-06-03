@@ -11,7 +11,7 @@
     max-width: 100%;
     object-fit: cover;
 }
-.product-details ,image-small{
+.product-details .image-small{
     width: 80px;
     height: 80px;
 }

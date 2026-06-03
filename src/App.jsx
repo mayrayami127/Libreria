@@ -14,32 +14,41 @@ import Signup from "./Components/Login/Signup.jsx";
 import { CartProvider } from "./Components/CartContext/CartContext"; 
 
 function App() {
-
   const [buscarTermino, setbuscarTermino] = useState("");
-  const [mostrarBuscador, setMostrarBuscador] = useState(false)
+  const [mostrarBuscador, setMostrarBuscador] = useState(false);
 
+  // CORREGIDO: Cambiado a setbuscarTermino para que coincida con tu useState de arriba
   const handleBuscar = (termino) => {
-    setbuscarTerminoLocal(termino.toLowerCase());
+    setbuscarTermino(termino.toLowerCase());
   };
 
-  const alternarBuscador = () =>{
-    setMostrarBuscador(!mostrarBuscador)
-  }
+  const alternarBuscador = () => {
+    setMostrarBuscador(!mostrarBuscador);
+  };
 
   return (
     <CartProvider>
       <Router>
-        <Navbar alternarBuscador = {alternarBuscador}  />
-        <Routes>
-  <Route path="/" element={<Home buscarTermino={buscarTermino} mostrarBuscador = {mostrarBuscador}/>} />
-<Route path="/signup" element={<Signup />} /> {/* <-- Ruta limpia */}  
+        <Navbar alternarBuscador={alternarBuscador} />
+       <Routes>
+         {/* 2. Ruta explícita para el Login */}
+        <Route path="/" element={<Home />} />
 
-  <Route path="/home" element={<Home buscarTermino={buscarTermino} />} />
+        {/* 2. Ruta explícita para el Login */}
+        <Route path="/login" element={<Login />} />
   
-  <Route path="/producto/:id" element={<DetailsProduct />} />
-  <Route path="/carrito" element={<Cart />} />
-  <Route path="/search" element={<Search onSearch={handleBuscar} />} />
-</Routes>
+        {/* 3. Ruta para el Registro */}
+        <Route path="/signup" element={<Signup />} /> 
+  
+        {/* Mantenemos /home por si el usuario escribe la URL manualmente */}
+        <Route path="/home" element={<Home buscarTermino={buscarTermino} mostrarBuscador={mostrarBuscador} />} />
+  
+        {/* Otras rutas de la app */}
+
+          <Route path="/producto/:id" element={<DetailsProduct />} />
+          <Route path="/carrito" element={<Cart />} />
+          <Route path="/search" element={<Search onSearch={handleBuscar} />} />
+        </Routes>
       </Router>
     </CartProvider>
   );

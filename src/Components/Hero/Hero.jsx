@@ -13,5 +13,7 @@ const Hero = () => {
             <img src={hero} alt="" />
          </div>
          </section>  
-    )
-}
+    );
+};
+
+export default Hero;
